@@ -1,16 +1,10 @@
-import './styles/global.css'
-import './styles/themes.css'
+import "./styles/global.css";
+import "./styles/themes.css";
 
-import { Container } from './components/Container/Container';
-import { Heading } from './components/Heading/Heading';
-
+import { Home } from "./page/Home";
 
 function App() {
-  return (
-    <Container>
-     <Heading>Menu</Heading>
-    </Container>
-  )
+  return Home();
 }
 
 export default App;
