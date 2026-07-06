@@ -68,6 +68,15 @@ export function MainForm() {
         activeTask: null, // Define a tarefa como Null, indicando que não há tarefa ativa
         secondsRemaining: "00:00", // Reseta o tempo restante para "00:00"
         formattedSecondsRemaining: "00:00", // Reseta o tempo restante formatado para "00:00"
+        tasks: prevState.tasks.map((task) => {
+          if (task.id === prevState.activeTask?.id) {
+            return {
+              ...task,
+              interruptedDate: Date.now(), // Define a data de interrupção da tarefa
+            };
+          }
+          return task;
+        }), // Atualiza a lista de tarefas, marcando a tarefa ativa como interrompida
       };
     });
   }
