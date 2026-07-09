@@ -1,19 +1,18 @@
-import styles from "./styles.module.css";
-
 import { DefaultInput } from "../DefaultInput";
 import { DefaultButton } from "../DefaultButton";
 import { Cycles } from "../Cycles";
 import { PlayCircleIcon, StopCircleIcon } from "lucide-react";
 import { useRef } from "react";
 import { useTaskContext } from "../../contexts/TaskContext/useTaskContext";
-import { TaskModel } from "../../models/TaskModels";
+import { TaskModel } from "../../models/TaskModel";
 import { getNextCycle } from "../../util/getNextCycle";
 import { getNextCycleType } from "../../util/getNextCycleType";
-import { formatSecondsToMinutes } from "../../util/formatSecondsToMinutes";
+import { TaskActionTypes } from "../../contexts/TaskContext/taskActions";
+import { Tips } from "../Tips";
 
 export function MainForm() {
   const taskNameInput = useRef<HTMLInputElement>(null);
-  const { state, setState } = useTaskContext();
+  const { state, dispatch } = useTaskContext();
 
   const nextCycle = getNextCycle(state.currentCycle); // Exemplo de uso da função getNextCycle
   const nextCycleType = getNextCycleType(nextCycle); // Exemplo de uso da função getNextCycleType
@@ -42,43 +41,14 @@ export function MainForm() {
       type: nextCycleType, // Obtém o tipo de ciclo com base no próximo ciclo
     };
 
-    const secondsRemaining = newTask.duration * 60; // Calcula o tempo restante em segundos com base na duração da tarefa
-
-    setState((prevState) => {
-      return {
-        ...prevState,
-        config: { ...prevState.config }, // Mantém a configuração existente
-        activeTask: newTask, // Define a nova tarefa como a tarefa ativa
-        currentCycle: nextCycle, // Atualiza o ciclo atual ao criar uma nova tarefa
-        secondsRemaining: secondsRemaining,
-        formattedSecondsRemaining: formatSecondsToMinutes(secondsRemaining), // Inicializa o tempo restante formatado como "00:00"
-        tasks: [...prevState.tasks, newTask], // Adiciona a nova tarefa à lista de tarefas
-      };
-    });
+    dispatch({ type: TaskActionTypes.START_TASK, payload: newTask });
   }
 
   function handleInterruptTask(
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ) {
     e.preventDefault();
-    setState((prevState) => {
-      return {
-        ...prevState,
-        config: { ...prevState.config }, // Mantém a configuração existente
-        activeTask: null, // Define a tarefa como Null, indicando que não há tarefa ativa
-        secondsRemaining: "00:00", // Reseta o tempo restante para "00:00"
-        formattedSecondsRemaining: "00:00", // Reseta o tempo restante formatado para "00:00"
-        tasks: prevState.tasks.map((task) => {
-          if (task.id === prevState.activeTask?.id) {
-            return {
-              ...task,
-              interruptedDate: Date.now(), // Define a data de interrupção da tarefa
-            };
-          }
-          return task;
-        }), // Atualiza a lista de tarefas, marcando a tarefa ativa como interrompida
-      };
-    });
+    dispatch({ type: TaskActionTypes.INTERRUPT_TASK });
   }
 
   return (
@@ -95,7 +65,7 @@ export function MainForm() {
           />
         </div>
         <div className="formRow">
-          <p>Proximo ciclo é de 15min.</p>
+          <Tips />
         </div>
 
         {state.currentCycle > 0 && (
