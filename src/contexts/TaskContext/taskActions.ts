@@ -1,24 +1,33 @@
-import { taskModel } from "../../models/TaskModel";
+import { TaskModel } from "../../models/TaskModel";
 
 export enum TaskActionTypes {
   START_TASK = "START_TASK",
   INTERRUPT_TASK = "INTERRUPT_TASK",
-  RESET_TASK = "RESET_TASK",
+  RESET_STATE = "RESET_STATE",
+  COUNT_DOWN = "COUNT_DOWN",
+  COMPLETE_TASK = "COMPLETE_TASK",
 }
 
 export type TaskActionModelWithPayload =
   | {
       type: TaskActionTypes.START_TASK;
-      payload: taskModel;
+      payload: TaskModel;
+    }
+  | {
+      type: TaskActionTypes.COUNT_DOWN;
+      payload: { secondsRemaining: number };
+    };
+
+export type TaskActionModelWithoutPayload =
+  | {
+      type: TaskActionTypes.RESET_STATE;
     }
   | {
       type: TaskActionTypes.INTERRUPT_TASK;
-      payload: taskModel;
+    }
+  | {
+      type: TaskActionTypes.COMPLETE_TASK;
     };
-
-export type TaskActionModelWithoutPayload = {
-  type: TaskActionTypes.RESET_TASK;
-};
 
 export type TaskActionModel =
   | TaskActionModelWithPayload
