@@ -5,6 +5,10 @@ import { CountDown } from "../../components/CountDown";
 import { MainForm } from "../../components/MainForm";
 import { Footer } from "../../components/Footer";
 
+type MainTemplate = {
+  children: React.ReactNode;
+};
+
 export function MainTemplate() {
   return (
     <>
