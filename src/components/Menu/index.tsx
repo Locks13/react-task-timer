@@ -7,6 +7,7 @@ import {
 } from "lucide-react";
 import styles from "./styles.module.css";
 import { useState, useEffect } from "react";
+import { RouterLink } from "../RouterLink";
 
 type AvailableTheme = "light" | "dark";
 
@@ -32,30 +33,30 @@ export function Menu() {
 
   return (
     <div className={styles.menu}>
-      <a
+      <RouterLink
         className={styles.menuLink}
-        href="#"
+        href="/"
         aria-label="Voltar para a página inicial"
         title="Home"
       >
         <HouseIcon />
-      </a>
-      <a
+      </RouterLink>
+      <RouterLink
         className={styles.menuLink}
-        href="#"
+        href="/history"
         aria-label="Ver histórico"
         title="Histórico"
       >
         <HistoryIcon />
-      </a>
-      <a
+      </RouterLink>
+      <RouterLink
         className={styles.menuLink}
-        href="#"
+        href="/about-pomodoro"
         aria-label="Ver configurações"
         title="Configurações"
       >
         <SettingsIcon />
-      </a>
+      </RouterLink>
       <a
         className={styles.menuLink}
         href="#"

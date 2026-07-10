@@ -1,15 +1,13 @@
 import { Container } from "../../components/Container";
 import { Logo } from "../../components/Logo";
 import { Menu } from "../../components/Menu";
-import { CountDown } from "../../components/CountDown";
-import { MainForm } from "../../components/MainForm";
 import { Footer } from "../../components/Footer";
 
 type MainTemplate = {
   children: React.ReactNode;
 };
 
-export function MainTemplate() {
+export function MainTemplate({ children }: MainTemplate) {
   return (
     <>
       <Container>
@@ -20,13 +18,7 @@ export function MainTemplate() {
         <Menu />
       </Container>
 
-      <Container>
-        <CountDown />
-      </Container>
-
-      <Container>
-        <MainForm />
-      </Container>
+      {children}
 
       <Container>
         <Footer />

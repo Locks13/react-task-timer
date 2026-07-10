@@ -9,6 +9,7 @@ import { getNextCycle } from "../../util/getNextCycle";
 import { getNextCycleType } from "../../util/getNextCycleType";
 import { TaskActionTypes } from "../../contexts/TaskContext/taskActions";
 import { Tips } from "../Tips";
+import { messagesToastify } from "../../adapters/messagesToastify";
 
 export function MainForm() {
   const taskNameInput = useRef<HTMLInputElement>(null);
@@ -16,9 +17,11 @@ export function MainForm() {
 
   const nextCycle = getNextCycle(state.currentCycle); // Exemplo de uso da função getNextCycle
   const nextCycleType = getNextCycleType(nextCycle); // Exemplo de uso da função getNextCycleType
+  const lastTaskName = state.tasks[state.tasks.length - 1]?.name || "";
 
   function handleCreateNewTask(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    messagesToastify.dismiss();
 
     if (taskNameInput.current === null) {
       return;
@@ -27,7 +30,7 @@ export function MainForm() {
     const taskName = taskNameInput.current.value.trim();
 
     if (!taskName) {
-      alert("Digite o nome da tarefa.");
+      messagesToastify.warning("Digite o nome da tarefa.");
       return;
     }
 
@@ -42,6 +45,7 @@ export function MainForm() {
     };
 
     dispatch({ type: TaskActionTypes.START_TASK, payload: newTask });
+    messagesToastify.success("Tarefa Iniciada");
   }
 
   function handleInterruptTask(
@@ -49,6 +53,8 @@ export function MainForm() {
   ) {
     e.preventDefault();
     dispatch({ type: TaskActionTypes.INTERRUPT_TASK });
+    messagesToastify.dismiss();
+    messagesToastify.error("Tarefa Interrompida");
   }
 
   return (
@@ -62,6 +68,7 @@ export function MainForm() {
             title="Teste"
             ref={taskNameInput}
             disabled={!!state.activeTask}
+            defaultValue={lastTaskName}
           />
         </div>
         <div className="formRow">
