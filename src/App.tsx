@@ -2,12 +2,15 @@ import "./styles/global.css";
 import "./styles/themes.css";
 
 import { TaskContextProvider } from "./contexts/TaskContext/TaskContextProvider";
-import { Home } from "./page/Home";
+import { MessagersContainer } from "./components/MessagersContainer";
+import { Router } from "./Router";
 
 function App() {
   return (
     <TaskContextProvider>
-      <Home />
+      <MessagersContainer>
+        <Router />
+      </MessagersContainer>
     </TaskContextProvider>
   );
 }
