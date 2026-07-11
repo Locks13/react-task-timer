@@ -1,3 +1,6 @@
+.title {
+  padding: 0 2rem;
+}
 .buttonContainer button {
   min-width: auto;
   margin: 0;
@@ -34,4 +37,21 @@
   border-bottom: 0.2rem solid var(--gray-700);
   text-align: left;
   padding: 1.6rem;
+}
+
+.thSort {
+  cursor: pointer;
+  transition: all 0.1s ease-in-out;
+}
+
+.thSort:hover {
+  filter: brightness(80%);
+}
+
+.hasNotask {
+  text-align: center;
+}
+
+.noTask {
+  font-weight: bold;
 }
