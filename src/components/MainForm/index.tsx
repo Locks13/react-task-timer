@@ -40,7 +40,7 @@ export function MainForm() {
       startDate: Date.now(),
       completeDate: null,
       interruptedDate: null,
-      duration: [state.config[nextCycleType]], // Obtém a duração da tarefa com base no tipo de ciclo
+      duration: Number([state.config[nextCycleType]]), // Obtém a duração da tarefa com base no tipo de ciclo
       type: nextCycleType, // Obtém o tipo de ciclo com base no próximo ciclo
     };
 
