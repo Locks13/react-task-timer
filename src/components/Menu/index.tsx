@@ -6,30 +6,24 @@ import {
   SunIcon,
 } from "lucide-react";
 import styles from "./styles.module.css";
-import { useState, useEffect } from "react";
+import { useContext } from "react";
 import { RouterLink } from "../RouterLink";
-
-type AvailableTheme = "light" | "dark";
+import { TaskContext } from "../../contexts/TaskContext/TaskContext";
 
 export function Menu() {
-  const [theme, setTheme] = useState<AvailableTheme>(() => {
-    const storedTheme =
-      (localStorage.getItem("theme") as AvailableTheme) || "dark";
-    return storedTheme;
-  });
+  const context = useContext(TaskContext);
 
+  if (!context) {
+    throw new Error("Menu must be used within TaskContextProvider");
+  }
+
+  const { theme, toggleTheme } = context;
   const nextThemeIcon = theme === "dark" ? <SunIcon /> : <MoonIcon />;
 
   function handleThemeChange(e: React.MouseEvent<HTMLAnchorElement>) {
     e.preventDefault();
-    const nextTheme = theme === "dark" ? "light" : "dark";
-    setTheme(nextTheme);
+    toggleTheme();
   }
-
-  useEffect(() => {
-    document.documentElement.setAttribute("data-theme", theme);
-    localStorage.setItem("theme", theme);
-  }, [theme]);
 
   return (
     <div className={styles.menu}>

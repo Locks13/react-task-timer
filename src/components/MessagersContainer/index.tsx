@@ -1,9 +1,15 @@
+import { useContext } from "react";
 import { Bounce, ToastContainer } from "react-toastify";
+import { TaskContext } from "../../contexts/TaskContext/TaskContext";
 
 type MessageConteinerPros = {
   children: React.ReactNode;
 };
 export function MessagersContainer({ children }: MessageConteinerPros) {
+  const context = useContext(TaskContext);
+
+  // Se não estiver no contexto, usa fallback light
+  const toastTheme = context?.getToastTheme ? context.getToastTheme() : "light";
   return (
     <>
       {children}
@@ -17,7 +23,7 @@ export function MessagersContainer({ children }: MessageConteinerPros) {
         pauseOnFocusLoss
         draggable
         pauseOnHover
-        theme="light"
+        theme={toastTheme}
         transition={Bounce}
       />
     </>
