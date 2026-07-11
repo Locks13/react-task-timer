@@ -51,7 +51,7 @@ export function Menu() {
       </RouterLink>
       <RouterLink
         className={styles.menuLink}
-        href="/about-pomodoro"
+        href="/settings"
         aria-label="Ver configurações"
         title="Configurações"
       >
