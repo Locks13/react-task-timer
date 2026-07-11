@@ -1,4 +1,4 @@
-import { useEffect, useReducer, useRef } from "react";
+import { useEffect, useReducer, useRef, useState } from "react";
 import { TaskContext } from "./TaskContext";
 import { initialTaskState } from "./initialTaskState";
 import { taskReducer } from "./taskReducer";
@@ -12,6 +12,15 @@ type TaskProviderProps = {
 };
 
 export function TaskContextProvider({ children }: TaskProviderProps) {
+  // Estado do tema com persistência
+  const [theme, setTheme] = useState<"light" | "dark">(() => {
+    const storedTheme = localStorage.getItem("theme") as
+      | "light"
+      | "dark"
+      | null;
+    return storedTheme || "dark";
+  });
+
   const [state, dispatch] = useReducer(taskReducer, initialTaskState, () => {
     const storageState = localStorage.getItem("state");
 
@@ -50,6 +59,19 @@ export function TaskContextProvider({ children }: TaskProviderProps) {
   });
 
   useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme);
+    localStorage.setItem("theme", theme);
+  }, [theme]);
+
+  function toggleTheme() {
+    setTheme((prev) => (prev === "dark" ? "light" : "dark"));
+  }
+
+  function getToastTheme(): "light" | "dark" {
+    return theme === "dark" ? "light" : "dark";
+  }
+
+  useEffect(() => {
     localStorage.setItem("state", JSON.stringify(state));
 
     if (!state.activeTask) {
@@ -70,7 +92,15 @@ export function TaskContextProvider({ children }: TaskProviderProps) {
   }, [state.activeTask]);
 
   return (
-    <TaskContext.Provider value={{ state, dispatch }}>
+    <TaskContext.Provider
+      value={{
+        state,
+        dispatch,
+        theme,
+        toggleTheme,
+        getToastTheme,
+      }}
+    >
       {children}
     </TaskContext.Provider>
   );
